@@ -4,27 +4,25 @@ name: listnun login image
 # ghcr.io/nerd-zero/listnun-login, where Flux image automation in
 # nerd-zero/infra (apps/listnun/login) picks it up.
 #
-# Tags follow listnun's convention: YYYY.MM.NNNN-alpha for dev (every push
-# to custom-login), bare YYYY.MM.NNNN for prod (manual run with prod: true).
-# NNNN is the zero-padded run number, so tags only ever increase and the
-# infra ImagePolicy's numerical "$year$month$patch" ordering holds.
+# Branches mirror listnun's own (main -> alpha, prod -> bare):
+#   listnun-dev -> YYYY.MM.NNNN-alpha (dev)
+#   listnun     -> YYYY.MM.NNNN       (prod)
+# NNNN is the zero-padded run number, shared by both branches, so tags only
+# ever increase and the infra ImagePolicy's numerical "$year$month$patch"
+# ordering holds.
 
 on:
   push:
     branches:
-      - custom-login
+      - listnun
+      - listnun-dev
     paths:
       - "apps/login/**"
       - "packages/**"
       - "proto/**"
       - "pnpm-lock.yaml"
       - ".github/workflows/listnun-login.yml"
-  workflow_dispatch:
-    inputs:
-      prod:
-        description: "Push a prod tag (no -alpha suffix)"
-        type: boolean
-        default: false
+  workflow_dispatch: {}
 
 concurrency:
   group: listnun-login-${{ github.ref }}
@@ -46,7 +44,7 @@ jobs:
         id: tag
         run: |
           TAG="$(date -u +%Y.%m).$(printf '%04d' "${{ github.run_number }}")"
-          if [[ "${{ inputs.prod }}" != "true" ]]; then
+          if [[ "${{ github.ref_name }}" != "listnun" ]]; then
             TAG="${TAG}-alpha"
           fi
           echo "image=ghcr.io/nerd-zero/listnun-login:${TAG}" >> "$GITHUB_OUTPUT"
