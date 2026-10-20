@@ -1,0 +1,93 @@
+name: listnun login image
+
+# Builds listnun's restyled login (apps/login) and pushes it to
+# ghcr.io/nerd-zero/listnun-login, where Flux image automation in
+# nerd-zero/infra (apps/listnun/login) picks it up.
+#
+# Tags follow listnun's convention: YYYY.MM.NNNN-alpha for dev (every push
+# to custom-login), bare YYYY.MM.NNNN for prod (manual run with prod: true).
+# NNNN is the zero-padded run number, so tags only ever increase and the
+# infra ImagePolicy's numerical "$year$month$patch" ordering holds.
+
+on:
+  push:
+    branches:
+      - custom-login
+    paths:
+      - "apps/login/**"
+      - "packages/**"
+      - "proto/**"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/listnun-login.yml"
+  workflow_dispatch:
+    inputs:
+      prod:
+        description: "Push a prod tag (no -alpha suffix)"
+        type: boolean
+        default: false
+
+concurrency:
+  group: listnun-login-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  image:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    env:
+      # The fork has no Nx Cloud token; build everything locally.
+      NX_NO_CLOUD: "true"
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set tag
+        id: tag
+        run: |
+          TAG="$(date -u +%Y.%m).$(printf '%04d' "${{ github.run_number }}")"
+          if [[ "${{ inputs.prod }}" != "true" ]]; then
+            TAG="${TAG}-alpha"
+          fi
+          echo "image=ghcr.io/nerd-zero/listnun-login:${TAG}" >> "$GITHUB_OUTPUT"
+
+      - uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Lint and test
+        working-directory: apps/login
+        run: |
+          pnpm nx run @zitadel/client:build
+          pnpm exec prettier --check .
+          pnpm exec eslint .
+          pnpm exec vitest run
+
+      # NEXT_PUBLIC_BASE_PATH (/ui/v2/login) comes from apps/login/.env and is
+      # inlined here at build time.
+      - name: Build standalone app
+        run: pnpm nx run @zitadel/login:build
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        run: |
+          docker build \
+            --label "org.opencontainers.image.source=https://github.com/nerd-zero/zitadel" \
+            --label "org.opencontainers.image.revision=${{ github.sha }}" \
+            --tag "${{ steps.tag.outputs.image }}" \
+            apps/login
+          docker push "${{ steps.tag.outputs.image }}"
+          echo "Pushed ${{ steps.tag.outputs.image }}" >> "$GITHUB_STEP_SUMMARY"
