@@ -111,9 +111,7 @@ export function LDAPUsernamePasswordForm({
         </div>
       )}
 
-      <div className="mt-8 flex w-full flex-row items-center">
-        <BackButton data-testid="back-button" />
-        <span className="flex-grow"></span>
+      <div className="ztdl-actions">
         <Button
           type="submit"
           className="self-end"
@@ -125,6 +123,7 @@ export function LDAPUsernamePasswordForm({
           {loading && <Spinner className="mr-2 h-5 w-5" />}
           <Translated i18nKey="submit" namespace="ldap" />
         </Button>
+        <BackButton data-testid="back-button" />
       </div>
     </form>
   );

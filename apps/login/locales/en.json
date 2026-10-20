@@ -1,7 +1,8 @@
 {
   "common": {
     "back": "Back",
-    "title": "Login with Zitadel"
+    "title": "Login with Zitadel",
+    "change": "Change"
   },
   "accounts": {
     "title": "Accounts",
@@ -9,7 +10,9 @@
     "addAnother": "Add another account",
     "noResults": "No accounts found",
     "verified": "verified",
-    "expired": "expired"
+    "expired": "expired",
+    "signedIn": "Signed in",
+    "signedOut": "Signed out"
   },
   "logout": {
     "title": "Logout",

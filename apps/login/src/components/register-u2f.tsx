@@ -184,10 +184,7 @@ export function RegisterU2f({ loginName, sessionId, organization, requestId, che
           </div>
         )}
 
-        <div className="mt-8 flex w-full flex-row items-center">
-          <BackButton data-testid="back-button" />
-
-          <span className="flex-grow"></span>
+        <div className="ztdl-actions">
           <Button
             type="submit"
             className="self-end"
@@ -198,6 +195,7 @@ export function RegisterU2f({ loginName, sessionId, organization, requestId, che
           >
             {loading && <Spinner className="mr-2 h-5 w-5" />} <Translated i18nKey="set.submit" namespace="u2f" />
           </Button>
+          <BackButton data-testid="back-button" />
         </div>
       </form>
     </>

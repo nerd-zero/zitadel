@@ -13,7 +13,6 @@ import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { Alert } from "./alert";
 import { AutoSubmitForm } from "./auto-submit-form";
-import { Avatar } from "./avatar";
 import { Translated } from "./translated";
 
 export function isSessionPrimaryFactorAndLifetimeValid(session: Partial<Session>): {
@@ -61,7 +60,7 @@ export function SessionItem({ session, reload, requestId }: { session: Session; 
     }
   }
 
-  const { valid, verifiedAt } = isSessionPrimaryFactorAndLifetimeValid(session);
+  const { valid } = isSessionPrimaryFactorAndLifetimeValid(session);
   const [samlData, setSamlData] = useState<{ url: string; fields: Record<string, string> } | null>(null);
 
   const [error, setError] = useState<string | null>(null);
@@ -101,44 +100,21 @@ export function SessionItem({ session, reload, requestId }: { session: Session; 
                 }
               }
             }}
-            className="group border-divider-light bg-background-light-400 dark:bg-background-dark-400 flex flex-row items-center rounded-md border px-4 py-2 transition-all hover:shadow-lg dark:hover:bg-white/10"
+            className="group border-ln-rule bg-ln-paper hover:border-ln-ink focus-visible:outline-ln-ink flex min-h-[60px] flex-row items-center gap-3 rounded-md border px-3.5 py-2.5 text-left transition-[border-color,transform] duration-200 focus:outline-none focus-visible:outline-2 motion-safe:active:scale-[0.99]"
           >
-            <div className="pr-4">
-              <Avatar
-                size="small"
-                loginName={session.factors?.user?.loginName as string}
-                name={session.factors?.user?.displayName ?? ""}
-              />
-            </div>
-
             <div className="flex flex-col items-start overflow-hidden">
-              <span className="">{session.factors?.user?.displayName}</span>
-              <span className="text-xs text-ellipsis opacity-80">{session.factors?.user?.loginName}</span>
-              {valid ? (
-                <span className="text-xs text-ellipsis opacity-80">
-                  <Translated i18nKey="verified" namespace="accounts" />{" "}
-                  {verifiedAt && moment(timestampDate(verifiedAt)).fromNow()}
-                </span>
-              ) : (
-                verifiedAt && (
-                  <span className="text-xs text-ellipsis opacity-80">
-                    <Translated i18nKey="expired" namespace="accounts" />{" "}
-                    {session.expirationDate && moment(timestampDate(session.expirationDate)).fromNow()}
-                  </span>
-                )
-              )}
+              <span className="truncate font-semibold">{session.factors?.user?.displayName}</span>
+              <span className="text-ln-ink-3 truncate text-[13px]">{session.factors?.user?.loginName}</span>
             </div>
 
             <span className="flex-grow"></span>
+            {/* Spec: "Signed in" in the good colour, "Signed out" in ink-3. */}
+            <span className={valid ? "text-ln-good text-[13px] font-semibold" : "text-ln-ink-3 text-[13px]"}>
+              <Translated i18nKey={valid ? "signedIn" : "signedOut"} namespace="accounts" />
+            </span>
             <div className="relative flex flex-row items-center">
-              {valid ? (
-                <div className="absolute right-6 mx-2 h-2 w-2 transform rounded-full bg-green-500 transition-all group-hover:right-6 sm:right-0"></div>
-              ) : (
-                <div className="absolute right-6 mx-2 h-2 w-2 transform rounded-full bg-red-500 transition-all group-hover:right-6 sm:right-0"></div>
-              )}
-
               <XCircleIcon
-                className="h-5 w-5 opacity-50 transition-all group-hover:block hover:opacity-100 sm:hidden"
+                className="text-ln-ink-3 hover:text-ln-ink h-5 w-5 transition-colors"
                 onClick={async (event: React.MouseEvent) => {
                   event.preventDefault();
                   event.stopPropagation();
@@ -153,11 +129,11 @@ export function SessionItem({ session, reload, requestId }: { session: Session; 
         {valid && session.expirationDate && (
           <Tooltip.Portal>
             <Tooltip.Content
-              className="bg-background-light-500 dark:bg-background-dark-500 z-50 rounded-md border px-3 py-2 text-xs text-black shadow-xl select-none dark:border-white/20 dark:text-white"
+              className="bg-ln-surface border-ln-rule text-ln-ink z-50 rounded-md border px-3 py-2 text-[13px] shadow-sm select-none"
               sideOffset={5}
             >
               Expires {moment(timestampDate(session.expirationDate)).fromNow()}
-              <Tooltip.Arrow className="fill-white dark:fill-white/20" />
+              <Tooltip.Arrow className="fill-ln-rule" />
             </Tooltip.Content>
           </Tooltip.Portal>
         )}

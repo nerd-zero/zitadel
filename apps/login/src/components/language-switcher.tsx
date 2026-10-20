@@ -45,9 +45,9 @@ export function LanguageSwitcher({ languages }: { languages: Lang[] }) {
       <Listbox value={selected} onChange={handleChange}>
         <ListboxButton
           className={clsx(
-            `relative block w-full py-1.5 pr-8 pl-3 text-left text-sm/6 text-black dark:text-white ${switcherRoundness}`,
+            `text-ln-ink-2 relative block w-full py-1.5 pr-8 pl-3 text-left text-[13px]/6 ${switcherRoundness}`,
             cardAppearance,
-            "focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2 data-[focus]:outline-white/25",
+            "data-[focus]:outline-ln-ink focus:outline-none data-[focus]:outline-2 data-[focus]:-outline-offset-2",
           )}
         >
           {selected.name}
@@ -57,7 +57,7 @@ export function LanguageSwitcher({ languages }: { languages: Lang[] }) {
           anchor="bottom"
           transition
           className={clsx(
-            `bg-background-light-500 dark:bg-background-dark-500 w-[var(--button-width)] rounded-md border border-black/5 p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none dark:border-white/5`,
+            `bg-ln-surface border-ln-rule w-[var(--button-width)] rounded-md border p-1 [--anchor-gap:var(--spacing-1)] focus:outline-none dark:border-white/5`,
             "transition duration-100 ease-in data-[leave]:data-[closed]:opacity-0",
           )}
         >
@@ -65,10 +65,10 @@ export function LanguageSwitcher({ languages }: { languages: Lang[] }) {
             <ListboxOption
               key={lang.code}
               value={lang}
-              className={`group flex cursor-default items-center gap-2 px-3 py-1.5 select-none data-[focus]:bg-black/10 dark:data-[focus]:bg-white/10 ${switcherRoundness}`}
+              className={`group data-[focus]:bg-ln-inset flex cursor-default items-center gap-2 px-3 py-1.5 select-none ${switcherRoundness}`}
             >
               <CheckIcon className="invisible size-4 group-data-[selected]:visible" />
-              <div className="text-sm/6 text-black dark:text-white">{lang.name}</div>
+              <div className="text-ln-ink text-sm/6">{lang.name}</div>
             </ListboxOption>
           ))}
         </ListboxOptions>

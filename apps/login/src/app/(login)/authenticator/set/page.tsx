@@ -192,9 +192,8 @@ export default async function Page(props: { searchParams: Promise<Record<string 
           </>
         )}
 
-        <div className="mt-8 flex w-full flex-row items-center">
+        <div className="ztdl-actions">
           <BackButton />
-          <span className="flex-grow"></span>
         </div>
       </div>
     </DynamicTheme>

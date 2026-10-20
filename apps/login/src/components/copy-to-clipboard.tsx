@@ -24,7 +24,7 @@ export function CopyToClipboard({ value }: Props) {
       <button
         id="tooltip-ctc"
         type="button"
-        className="text-primary-light-500 dark:text-primary-dark-500"
+        className="text-ln-ink hover:text-ln-ink-2 font-semibold underline underline-offset-[3px] transition-colors"
         onClick={() => setCopied(true)}
       >
         {!copied ? <ClipboardIcon className="h-5 w-5" /> : <ClipboardDocumentCheckIcon className="h-5 w-5" />}

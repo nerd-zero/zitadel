@@ -176,15 +176,13 @@ export default async function Page(props: {
             ></TotpRegister>
           </div>
         ) : (
-          <div className="mt-8 flex w-full flex-row items-center">
-            <BackButton />
-            <span className="flex-grow"></span>
-
+          <div className="ztdl-actions">
             <Link href={urlToContinue}>
               <Button type="submit" className="self-end" variant={ButtonVariants.Primary}>
                 <Translated i18nKey="set.submit" namespace="otp" />
               </Button>
             </Link>
+            <BackButton />
           </div>
         )}
       </div>

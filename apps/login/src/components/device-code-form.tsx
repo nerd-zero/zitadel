@@ -78,9 +78,7 @@ export function DeviceCodeForm({ userCode }: { userCode?: string }) {
           </div>
         )}
 
-        <div className="mt-8 flex w-full flex-row items-center">
-          <BackButton />
-          <span className="flex-grow"></span>
+        <div className="ztdl-actions">
           <Button
             type="submit"
             className="self-end"
@@ -91,6 +89,7 @@ export function DeviceCodeForm({ userCode }: { userCode?: string }) {
           >
             {loading && <Spinner className="mr-2 h-5 w-5" />} <Translated i18nKey="usercode.submit" namespace="device" />
           </Button>
+          <BackButton />
         </div>
       </form>
     </>

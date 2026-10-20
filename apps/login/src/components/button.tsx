@@ -1,7 +1,8 @@
 import { APPEARANCE_STYLES, getComponentRoundness, getThemeConfig } from "@/lib/theme";
 import { ThemeableProps } from "@/lib/themeUtils";
 import { clsx } from "clsx";
-import { ButtonHTMLAttributes, DetailedHTMLProps, forwardRef } from "react";
+import { ButtonHTMLAttributes, Children, DetailedHTMLProps, ReactNode, forwardRef, isValidElement } from "react";
+import { Spinner } from "./spinner";
 
 export enum ButtonSizes {
   Small = "Small",
@@ -26,6 +27,9 @@ export type ButtonProps = DetailedHTMLProps<ButtonHTMLAttributes<HTMLButtonEleme
   color?: ButtonColors;
 } & ThemeableProps;
 
+// listnun buttons (LISTNUN_UI_SPEC 2): ink fill or ink outline, 44px, 6px
+// radius. Colour and opacity ease between states (enabled, disabled, loading)
+// and the button gives a little on press; reduced motion keeps only colour.
 export const getButtonClasses = (
   size: ButtonSizes,
   variant: ButtonVariants,
@@ -35,19 +39,20 @@ export const getButtonClasses = (
 ) =>
   clsx(
     {
-      "box-border leading-36px text-14px inline-flex items-center focus:outline-none transition-colors transition-shadow duration-300": true,
-      "disabled:border-none disabled:bg-gray-300 disabled:text-gray-600 disabled:shadow-none disabled:cursor-not-allowed disabled:dark:bg-gray-700 disabled:dark:text-gray-900":
-        variant === ButtonVariants.Primary,
-      "bg-primary-light-500 dark:bg-primary-dark-500 hover:bg-primary-light-400 hover:dark:bg-primary-dark-400 text-primary-light-contrast-500 dark:text-primary-dark-contrast-500":
+      "box-border inline-flex items-center justify-center gap-2 text-[15px] font-semibold leading-none cursor-pointer select-none": true,
+      "transition-[background-color,color,border-color,opacity,transform] duration-200 ease-out motion-safe:active:scale-[0.98] motion-reduce:transition-colors": true,
+      "focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ln-ink": true,
+      "disabled:cursor-not-allowed disabled:opacity-45 disabled:active:scale-100": true,
+      "border border-ln-ink bg-ln-ink text-ln-paper hover:bg-ln-ink-2 hover:border-ln-ink-2 disabled:hover:bg-ln-ink disabled:hover:border-ln-ink":
         variant === ButtonVariants.Primary && color !== ButtonColors.Warn,
-      "bg-warn-light-500 dark:bg-warn-dark-500 hover:bg-warn-light-400 hover:dark:bg-warn-dark-400 text-white dark:text-white":
+      "border border-ln-bad-strong bg-ln-bad-strong text-ln-paper hover:opacity-90":
         variant === ButtonVariants.Primary && color === ButtonColors.Warn,
-      "border border-button-light-border dark:border-button-dark-border text-gray-950 hover:bg-gray-500/20 hover:dark:bg-white/10 focus:bg-gray-500/20 focus:dark:bg-white/10 dark:text-white disabled:text-gray-600 disabled:hover:bg-transparent disabled:dark:hover:bg-transparent disabled:cursor-not-allowed disabled:dark:text-gray-900":
-        variant === ButtonVariants.Secondary,
-      "border border-button-light-border dark:border-button-dark-border text-warn-light-500 dark:text-warn-dark-500 hover:bg-warn-light-500/10 dark:hover:bg-warn-light-500/10 focus:bg-warn-light-500/20 dark:focus:bg-warn-light-500/20":
+      "border border-ln-ink bg-transparent text-ln-ink hover:bg-ln-inset disabled:hover:bg-transparent":
+        variant === ButtonVariants.Secondary && color !== ButtonColors.Warn,
+      "border border-ln-bad-strong bg-transparent text-ln-bad hover:bg-ln-bad-tint":
         color === ButtonColors.Warn && variant !== ButtonVariants.Primary,
-      "px-16 py-2": size === ButtonSizes.Large,
-      "px-4 h-[36px]": size === ButtonSizes.Small,
+      "h-11 px-6": size === ButtonSizes.Large,
+      "h-11 px-4": size === ButtonSizes.Small,
     },
     roundnessClasses, // Apply the full roundness classes directly
     appearance, // Apply appearance-specific styling (shadows, borders, etc.)
@@ -62,7 +67,7 @@ function getDefaultButtonRoundness(): string {
 function getDefaultButtonAppearance(): string {
   const themeConfig = getThemeConfig();
   const appearance = APPEARANCE_STYLES[themeConfig.appearance];
-  return appearance?.button || "border border-button-light-border dark:border-button-dark-border"; // Fallback to flat design
+  return appearance?.button ?? "";
 }
 
 export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
@@ -86,6 +91,7 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       <button
         type="button"
         ref={ref}
+        aria-busy={props.disabled && hasSpinner(children) ? true : undefined}
         className={`${getButtonClasses(size, variant, color, actualRoundness, actualAppearance)} ${className}`}
         {...props}
       >
@@ -94,3 +100,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
     );
   },
 );
+
+// Forms show <Spinner /> inside the button while they wait on the server;
+// expose that to assistive tech as a busy button.
+function hasSpinner(children: ReactNode): boolean {
+  return Children.toArray(children).some((child) => isValidElement(child) && child.type === Spinner);
+}

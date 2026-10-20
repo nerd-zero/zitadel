@@ -140,7 +140,7 @@ export function VerifyForm({ userId, loginName, organization, requestId, code, i
               aria-label="Resend Code"
               disabled={loading}
               type="button"
-              className="text-primary-light-500 hover:text-primary-light-400 dark:text-primary-dark-500 hover:dark:text-primary-dark-400 ml-4 cursor-pointer disabled:cursor-default disabled:text-gray-400 dark:disabled:text-gray-700"
+              className="text-ln-ink hover:text-ln-ink-2 ml-4 cursor-pointer font-semibold underline underline-offset-[3px] transition-colors disabled:cursor-default disabled:text-gray-400"
               onClick={() => {
                 resendCode();
               }}
@@ -167,9 +167,7 @@ export function VerifyForm({ userId, loginName, organization, requestId, code, i
           </div>
         )}
 
-        <div className="mt-8 flex w-full flex-row items-center">
-          <BackButton />
-          <span className="flex-grow"></span>
+        <div className="ztdl-actions">
           <Button
             type="submit"
             className="self-end"
@@ -181,6 +179,7 @@ export function VerifyForm({ userId, loginName, organization, requestId, code, i
             {loading && <Spinner className="mr-2 h-5 w-5" />}
             <Translated i18nKey="verify.submit" namespace="verify" />
           </Button>
+          <BackButton />
         </div>
       </form>
     </>

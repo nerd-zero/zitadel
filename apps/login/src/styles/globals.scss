@@ -2,14 +2,77 @@
 @use "tailwindcss";
 @config "../../tailwind.config.mjs";
 
+// listnun palette (LISTNUN_UI_SPEC 1.1). Dark values match the console's
+// derived dark theme in listnun's web/src/index.css.
+:root {
+  --ln-paper: #f5f0e6;
+  --ln-surface: #fbf8f2;
+  --ln-field: #fffdf9;
+  --ln-inset: #ece4d4;
+  --ln-rule: #cfc5b2;
+  --ln-rule-light: #e0d7c5;
+  --ln-field-border: #a99e89;
+  --ln-ink: #141210;
+  --ln-ink-2: #4a443c;
+  --ln-ink-3: #5c554b;
+  --ln-good: #2a6a4c;
+  --ln-good-tint: #dcebe0;
+  --ln-bad: #8e3324;
+  --ln-bad-tint: #f3d9d1;
+  --ln-bad-strong: #a83f2d;
+  --ln-neutral-tint: #e6dfd1;
+}
+
+.dark {
+  --ln-paper: #151311;
+  --ln-surface: #1e1b17;
+  --ln-field: #191714;
+  --ln-inset: #26221d;
+  --ln-rule: #3d372f;
+  --ln-rule-light: #2c2822;
+  --ln-field-border: #6b6255;
+  --ln-ink: #f5f0e6;
+  --ln-ink-2: #cfc6b6;
+  --ln-ink-3: #a89f90;
+  --ln-good: #9bd4b4;
+  --ln-good-tint: #1d3428;
+  --ln-bad: #f2a898;
+  --ln-bad-tint: #3f1f18;
+  --ln-bad-strong: #d0634e;
+  --ln-neutral-tint: #2b2721;
+}
+
 @layer base {
+  body {
+    @apply bg-ln-paper text-ln-ink;
+    font-size: 15px;
+    line-height: 1.5;
+    font-variant-numeric: tabular-nums;
+  }
+
   h1,
   .ztdl-h1 {
-    @apply text-center text-2xl;
+    @apply text-left text-[28px] leading-[1.15] font-semibold tracking-[-0.02em];
   }
 
   .ztdl-p {
-    @apply text-text-light-secondary-500 dark:text-text-dark-secondary-500 text-sm;
+    @apply text-ln-ink-2 text-[15px];
+  }
+
+  a {
+    @apply underline-offset-[3px];
+  }
+}
+
+// Form action rows: the primary action full width, "Back" under it
+// (spec: full-width primary buttons).
+.ztdl-actions {
+  @apply mt-6 flex w-full flex-col gap-2;
+
+  > button,
+  > a,
+  > a > button {
+    @apply w-full justify-center;
   }
 }
 
@@ -24,11 +87,8 @@ html {
 
 .form-checkbox:checked {
   background-image: none !important;
-  background-color: var(--theme-light-primary-500);
-}
-
-.dark .form-checkbox:checked {
-  background-color: var(--theme-dark-primary-500);
+  background-color: var(--ln-ink);
+  border-color: var(--ln-ink);
 }
 
 .form-checkbox:checked::after {
@@ -41,11 +101,7 @@ html {
   mask-size: 100% 100%;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  background-color: var(--theme-light-primary-contrast-500);
-}
-
-.dark .form-checkbox:checked::after {
-  background-color: var(--theme-dark-primary-contrast-500);
+  background-color: var(--ln-paper);
 }
 
 .skeleton {
@@ -73,4 +129,9 @@ html {
   100% {
     background-position: -200% 0;
   }
+}
+
+// A description translated to "" (e.g. the password step) leaves no gap.
+.ztdl-p:has(> span:empty) {
+  display: none;
 }

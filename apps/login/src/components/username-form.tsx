@@ -116,7 +116,7 @@ export function UsernameForm({
           />
           {allowRegister && (
             <button
-              className="hover:text-primary-light-500 dark:hover:text-primary-dark-500 text-sm transition-all"
+              className="text-ln-ink hover:text-ln-ink-2 text-[13px] font-semibold underline underline-offset-[3px] transition-colors"
               onClick={() => {
                 const registerParams = new URLSearchParams();
                 if (organization) {
@@ -142,9 +142,7 @@ export function UsernameForm({
             <Alert>{error}</Alert>
           </div>
         )}
-        <div className="mt-4 flex w-full flex-row items-center">
-          <BackButton data-testid="back-button" />
-          <span className="flex-grow"></span>
+        <div className="ztdl-actions">
           <Button
             data-testid="submit-button"
             type="submit"
@@ -156,6 +154,7 @@ export function UsernameForm({
             {loading && <Spinner className="mr-2 h-5 w-5" />}
             <Translated i18nKey="submit" namespace="loginname" />
           </Button>
+          <BackButton data-testid="back-button" />
         </div>
       </form>
     </>

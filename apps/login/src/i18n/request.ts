@@ -5,6 +5,7 @@ import { JsonObject } from "@zitadel/client";
 import deepmerge from "deepmerge";
 import { getRequestConfig } from "next-intl/server";
 import { cookies, headers } from "next/headers";
+import listnunEnMessages from "../../locales/listnun/en.json";
 
 export default getRequestConfig(async () => {
   const fallback = "en";
@@ -85,6 +86,14 @@ export default getRequestConfig(async () => {
 
   return {
     locale,
-    messages: deepmerge.all([fallbackMessages, localeMessages, customMessages]) as Record<string, string>,
+    // listnun's English copy (LISTNUN_UI_SPEC sign-in screens) goes last:
+    // Zitadel core returns its own default texts as "custom" translations,
+    // which would otherwise hide it. Other languages keep Zitadel's texts.
+    messages: deepmerge.all([
+      fallbackMessages,
+      localeMessages,
+      customMessages,
+      ...(locale === fallback ? [listnunEnMessages] : []),
+    ]) as Record<string, string>,
   };
 });

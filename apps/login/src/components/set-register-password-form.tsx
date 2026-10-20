@@ -151,8 +151,7 @@ export function SetRegisterPasswordForm({
 
         {error && <Alert>{error}</Alert>}
 
-        <div className="mt-8 flex w-full flex-row items-center justify-between">
-          <BackButton data-testid="back-button" />
+        <div className="ztdl-actions">
           <Button
             type="submit"
             variant={ButtonVariants.Primary}
@@ -162,6 +161,7 @@ export function SetRegisterPasswordForm({
           >
             {loading && <Spinner className="mr-2 h-5 w-5" />} <Translated i18nKey="password.submit" namespace="register" />
           </Button>
+          <BackButton data-testid="back-button" />
         </div>
       </form>
     </>

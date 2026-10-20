@@ -55,8 +55,9 @@ describe("TextInput Component", () => {
       const { container } = render(<TextInput label="Email" error="Invalid" />);
       const input = container.querySelector("input");
       expect(input).toBeTruthy();
-      // Should have border-warn or warn-related styles
-      expect(input?.className).toMatch(/border-warn/);
+      // Critical border (listnun palette) and exposed as invalid
+      expect(input?.className).toMatch(/border-ln-bad-strong/);
+      expect(input?.getAttribute("aria-invalid")).toBe("true");
     });
 
     it("should render success state with message", () => {

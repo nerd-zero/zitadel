@@ -1,0 +1,95 @@
+{
+  "common": {
+    "title": "Sign in to listnun",
+    "change": "Change"
+  },
+  "accounts": {
+    "title": "Choose an account",
+    "description": "Pick the account to use for listnun.",
+    "addAnother": "Use another account",
+    "signedIn": "Signed in",
+    "signedOut": "Signed out"
+  },
+  "loginname": {
+    "title": "Sign in",
+    "description": "Use your listnun account to manage your workspaces.",
+    "register": "New to listnun? Create an account",
+    "labels": {
+      "loginname": "Email or username",
+      "usernameOrEmail": "Email or username"
+    }
+  },
+  "password": {
+    "verify": {
+      "title": "Enter your password",
+      "description": "",
+      "resetPassword": "Forgot password?",
+      "submit": "Sign in"
+    },
+    "set": {
+      "title": "Reset your password",
+      "description": "We emailed you a code. Enter it and choose a new password.",
+      "submit": "Set new password",
+      "labels": {
+        "newPassword": "New password",
+        "confirmPassword": "Repeat new password"
+      }
+    }
+  },
+  "idp": {
+    "orSignInWith": "or",
+    "signInWithApple": "Continue with Apple",
+    "signInWithGoogle": "Continue with Google",
+    "signInWithAzureAD": "Continue with Microsoft",
+    "signInWithGithub": "Continue with GitHub",
+    "signInWithGitlab": "Continue with GitLab",
+    "signInWithZitadel": "Continue with Zitadel"
+  },
+  "mfa": {
+    "verify": {
+      "title": "Two-step verification"
+    },
+    "set": {
+      "title": "Set up two-step verification",
+      "description": "Adds a second step when you sign in, so a stolen password isn't enough to get into your workspaces.",
+      "skip": "Skip for now"
+    }
+  },
+  "otp": {
+    "verify": {
+      "title": "Two-step verification",
+      "totpDescription": "Enter the 6-digit code from your authenticator app.",
+      "smsDescription": "Enter the 6-digit code we sent you by text message.",
+      "emailDescription": "Enter the 6-digit code we emailed you.",
+      "submit": "Verify"
+    },
+    "set": {
+      "title": "Set up two-step verification",
+      "totpDescription": "Adds a second step when you sign in, so a stolen password isn't enough to get into your workspaces.",
+      "totpRegisterDescription": "Open an authenticator app on your phone, scan this code or enter the key by hand, then type the 6-digit code it shows.",
+      "submit": "Turn on"
+    }
+  },
+  "register": {
+    "title": "Create your account",
+    "description": "Next you'll name your organization and start a 14-day trial with Pro features.",
+    "submit": "Create account",
+    "password": {
+      "labels": {
+        "confirmPassword": "Repeat password"
+      }
+    },
+    "labels": {
+      "email": "Work email"
+    }
+  },
+  "verify": {
+    "verify": {
+      "title": "Check your email",
+      "description": "We sent a 6-digit code to your email address.",
+      "noCodeReceived": "Didn't get it? Check spam, or",
+      "resendCode": "send a new code",
+      "submit": "Verify email"
+    }
+  }
+}

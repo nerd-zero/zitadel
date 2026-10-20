@@ -212,7 +212,17 @@ export function RegisterPasskey({
         </div>
       )}
 
-      <div className="mt-8 flex w-full flex-row items-center">
+      <div className="ztdl-actions">
+        <Button
+          type="submit"
+          className="self-end"
+          variant={ButtonVariants.Primary}
+          disabled={loading || !formState.isValid}
+          onClick={handleSubmit(submitRegisterAndContinue)}
+          data-testid="submit-button"
+        >
+          {loading && <Spinner className="mr-2 h-5 w-5" />} <Translated i18nKey="set.submit" namespace="passkey" />
+        </Button>
         {isPrompt ? (
           <Button
             type="button"
@@ -226,18 +236,6 @@ export function RegisterPasskey({
         ) : (
           <BackButton />
         )}
-
-        <span className="flex-grow"></span>
-        <Button
-          type="submit"
-          className="self-end"
-          variant={ButtonVariants.Primary}
-          disabled={loading || !formState.isValid}
-          onClick={handleSubmit(submitRegisterAndContinue)}
-          data-testid="submit-button"
-        >
-          {loading && <Spinner className="mr-2 h-5 w-5" />} <Translated i18nKey="set.submit" namespace="passkey" />
-        </Button>
       </div>
     </form>
   );

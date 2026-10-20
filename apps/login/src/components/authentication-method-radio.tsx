@@ -29,14 +29,14 @@ export function AuthenticationMethodRadio({
                 value={method}
                 data-testid={method + "-radio"}
                 className={({ focus, checked }) =>
-                  `${focus ? "ring-primary-light-500/60 ring-2 dark:ring-white/20" : ""} ${
+                  `${focus ? "outline-ln-ink outline-2 outline-offset-2" : ""} ${
                     checked
-                      ? "bg-background-light-400 ring-primary-light-500 dark:bg-background-dark-400 dark:ring-primary-dark-500 ring-2"
-                      : "bg-background-light-400 dark:bg-background-dark-400"
-                  } boder-divider-light dark:border-divider-dark relative flex h-full flex-1 cursor-pointer rounded-lg border px-5 py-4 hover:shadow-lg focus:outline-none dark:hover:bg-white/10`
+                      ? "border-ln-ink bg-ln-inset ring-ln-ink ring-1"
+                      : "border-ln-rule bg-ln-paper hover:border-ln-ink"
+                  } relative flex h-full flex-1 cursor-pointer rounded-lg border px-5 py-4 transition-[border-color,background-color] duration-200`
                 }
               >
-                <div className="flex w-full flex-col items-center text-sm">
+                <div className="flex w-full flex-col items-center text-[14px] font-semibold">
                   {method === "passkey" && (
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

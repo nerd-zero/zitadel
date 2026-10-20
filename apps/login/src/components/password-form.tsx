@@ -123,7 +123,7 @@ export function PasswordForm({ loginSettings, loginName, organization, defaultOr
           />
           {!loginSettings?.hidePasswordReset && (
             <button
-              className="hover:text-primary-light-500 dark:hover:text-primary-dark-500 text-sm transition-all"
+              className="text-ln-ink hover:text-ln-ink-2 text-[13px] font-semibold underline underline-offset-[3px] transition-colors"
               onClick={() => resetPasswordAndContinue()}
               type="button"
               disabled={loading}
@@ -148,9 +148,7 @@ export function PasswordForm({ loginSettings, loginName, organization, defaultOr
           </div>
         )}
 
-        <div className="mt-8 flex w-full flex-row items-center">
-          <BackButton data-testid="back-button" />
-          <span className="flex-grow"></span>
+        <div className="ztdl-actions">
           <Button
             type="submit"
             className="self-end"
@@ -161,6 +159,7 @@ export function PasswordForm({ loginSettings, loginName, organization, defaultOr
           >
             {loading && <Spinner className="mr-2 h-5 w-5" />} <Translated i18nKey="verify.submit" namespace="password" />
           </Button>
+          <BackButton data-testid="back-button" />
         </div>
       </form>
     </>

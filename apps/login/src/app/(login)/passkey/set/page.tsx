@@ -83,7 +83,7 @@ export default async function Page(props: { searchParams: Promise<Record<string 
           <span>
             <Translated i18nKey="set.info.description" namespace="passkey" />
             <a
-              className="text-primary-light-500 hover:text-primary-light-300 dark:text-primary-dark-500 hover:dark:text-primary-dark-300"
+              className="text-ln-ink hover:text-ln-ink-2 font-semibold underline underline-offset-[3px] transition-colors"
               target="_blank"
               href="https://zitadel.com/docs/guides/manage/user/reg-create-user#with-passwordless"
             >

@@ -130,8 +130,7 @@ export function TotpRegister({ uri, loginName, sessionId, requestId, organizatio
               </div>
             )}
 
-            <div className="mt-8 flex w-full flex-row items-center">
-              <span className="flex-grow"></span>
+            <div className="ztdl-actions">
               <Button
                 type="submit"
                 className="self-end"

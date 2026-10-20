@@ -55,6 +55,28 @@ export default {
         gray: colors.zinc,
         // Dynamic theme colors
         ...themeColors,
+        // listnun palette (LISTNUN_UI_SPEC 1.1); values live in globals.scss
+        // so the dark theme can swap them.
+        ln: Object.fromEntries(
+          [
+            "paper",
+            "surface",
+            "field",
+            "inset",
+            "rule",
+            "rule-light",
+            "field-border",
+            "ink",
+            "ink-2",
+            "ink-3",
+            "good",
+            "good-tint",
+            "bad",
+            "bad-tint",
+            "bad-strong",
+            "neutral-tint",
+          ].map((name) => [name, `var(--ln-${name})`]),
+        ),
         // State colors
         state: {
           success: {

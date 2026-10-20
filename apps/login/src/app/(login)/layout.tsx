@@ -8,18 +8,24 @@ import { ThemeProvider } from "@/components/theme-provider";
 import ThemeSwitch from "@/components/theme-switch";
 import { LANGS, getLanguage } from "@/lib/i18n";
 import { getServiceConfig } from "@/lib/service-url";
-import { getAllowedLanguages } from "@/lib/zitadel";
+import { getAllowedLanguages, getLegalAndSupportSettings } from "@/lib/zitadel";
 import * as Tooltip from "@radix-ui/react-tooltip";
 import type { Metadata } from "next";
 import { getTranslations } from "next-intl/server";
-import { Lato } from "next/font/google";
+import { Hanken_Grotesk } from "next/font/google";
 import { headers } from "next/headers";
 import React, { Suspense } from "react";
 
-const lato = Lato({
-  weight: ["400", "700", "900"],
+// LISTNUN_UI_SPEC 1.2: one family everywhere.
+const hanken = Hanken_Grotesk({
+  weight: ["400", "500", "600", "700"],
   subsets: ["latin"],
+  fallback: ["Arial", "sans-serif"],
 });
+
+function Wordmark() {
+  return <div className="text-ln-ink text-[30px] leading-none font-semibold tracking-[-0.01em]">listnun</div>;
+}
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("common");
@@ -42,8 +48,22 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     console.error("Failed to load supported languages", e);
   }
 
+  // Footer links come from the instance's legal and support settings, so they
+  // stay editable in Zitadel rather than baked into the build.
+  let legal: Awaited<ReturnType<typeof getLegalAndSupportSettings>>;
+  try {
+    legal = await getLegalAndSupportSettings({ serviceConfig });
+  } catch (e) {
+    console.error("Failed to load legal and support settings", e);
+  }
+  const footerLinks = [
+    { label: "Privacy", href: legal?.privacyPolicyLink },
+    { label: "Terms", href: legal?.tosLink },
+    { label: "Help", href: legal?.helpLink },
+  ].filter((link): link is { label: string; href: string } => !!link.href);
+
   return (
-    <html className={`${lato.className}`} suppressHydrationWarning>
+    <html className={`${hanken.className}`} suppressHydrationWarning>
       <head />
       <body>
         <ThemeProvider>
@@ -51,9 +71,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             <Suspense
               fallback={
                 <BackgroundWrapper
-                  className={`bg-background-light-600 dark:bg-background-dark-600 relative flex min-h-screen flex-col justify-center`}
+                  className={`bg-ln-paper text-ln-ink relative flex min-h-screen flex-col items-center gap-7 pt-14 pb-10`}
                 >
-                  <div className="relative mx-auto w-full max-w-[440px] py-8">
+                  <Wordmark />
+                  <div className="relative mx-auto w-full max-w-[452px] px-4">
                     <Skeleton>
                       <div className="h-40"></div>
                     </Skeleton>
@@ -66,15 +87,25 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             >
               <LanguageProvider>
                 <BackgroundWrapper
-                  className={`bg-background-light-600 dark:bg-background-dark-600 relative flex min-h-screen flex-col justify-center`}
+                  className={`bg-ln-paper text-ln-ink relative flex min-h-screen flex-col items-center gap-7 pt-14 pb-10`}
                 >
-                  <div className="relative mx-auto w-full max-w-[1100px] py-8">
-                    <div>{children}</div>
-                    <div className="mx-auto flex max-w-[440px] flex-row items-center justify-end space-x-4 px-4 py-4 md:max-w-full md:px-8">
-                      <LanguageSwitcher languages={languages} />
-                      <ThemeSwitch />
-                    </div>
-                  </div>
+                  <Wordmark />
+                  <main className="relative w-full max-w-[1100px]">{children}</main>
+                  <footer className="text-ln-ink-3 mt-auto flex flex-wrap items-center justify-center gap-x-5 gap-y-2 px-4 text-[13px]">
+                    {footerLinks.map((link) => (
+                      <a
+                        key={link.label}
+                        href={link.href}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="text-ln-ink-3 hover:text-ln-ink underline"
+                      >
+                        {link.label}
+                      </a>
+                    ))}
+                    <LanguageSwitcher languages={languages} />
+                    <ThemeSwitch />
+                  </footer>
                 </BackgroundWrapper>
               </LanguageProvider>
             </Suspense>

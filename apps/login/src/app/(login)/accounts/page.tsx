@@ -1,10 +1,10 @@
+import { ButtonColors, ButtonSizes, ButtonVariants, getButtonClasses } from "@/components/button";
 import { DynamicTheme } from "@/components/dynamic-theme";
 import { SessionsList } from "@/components/sessions-list";
 import { Translated } from "@/components/translated";
 import { getAllSessions } from "@/lib/cookies";
 import { getServiceConfig } from "@/lib/service-url";
 import { getBrandingSettings, getDefaultOrg, listSessions, ServiceConfig } from "@/lib/zitadel";
-import { UserPlusIcon } from "@heroicons/react/24/outline";
 import { create } from "@zitadel/client";
 import { Organization } from "@zitadel/proto/zitadel/org/v2/org_pb";
 import { Session, SessionSchema } from "@zitadel/proto/zitadel/session/v2/session_pb";
@@ -116,17 +116,13 @@ export default async function Page(props: { searchParams: Promise<Record<string 
       </div>
 
       <div className="w-full">
-        <div className="flex w-full flex-col space-y-2">
+        <div className="flex w-full flex-col gap-5">
           <SessionsList sessions={sessions} requestId={requestId} />
-          <Link href={`/loginname?` + params}>
-            <div className="flex flex-row items-center rounded-md px-4 py-3 transition-all hover:bg-black/10 dark:hover:bg-white/10">
-              <div className="mr-4 flex h-8 w-8 flex-row items-center justify-center rounded-full bg-black/5 dark:bg-white/5">
-                <UserPlusIcon className="h-5 w-5" />
-              </div>
-              <span className="text-sm">
-                <Translated i18nKey="addAnother" namespace="accounts" />
-              </span>
-            </div>
+          <Link
+            href={`/loginname?` + params}
+            className={getButtonClasses(ButtonSizes.Small, ButtonVariants.Secondary, ButtonColors.Primary) + " w-full"}
+          >
+            <Translated i18nKey="addAnother" namespace="accounts" />
           </Link>
         </div>
       </div>

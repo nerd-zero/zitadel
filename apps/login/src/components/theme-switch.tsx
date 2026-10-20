@@ -22,7 +22,7 @@ function getSelectedButtonStyle(isSelected: boolean): string {
   const themeConfig = getThemeConfig();
 
   if (!isSelected) {
-    return "text-gray-400 hover:text-gray-300 dark:text-gray-500 dark:hover:text-gray-400";
+    return "text-ln-ink-3 hover:text-ln-ink";
   }
 
   // Selected state styling based on appearance theme
@@ -33,7 +33,7 @@ function getSelectedButtonStyle(isSelected: boolean): string {
       return "bg-white dark:bg-gray-800 text-gray-900 dark:text-white shadow-md";
     case "flat":
     default:
-      return "bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-200 dark:border-gray-700";
+      return "bg-ln-field text-ln-ink border border-ln-rule";
   }
 }
 

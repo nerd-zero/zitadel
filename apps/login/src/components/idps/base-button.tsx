@@ -18,7 +18,7 @@ export type SignInWithIdentityProviderProps = DetailedHTMLProps<
 function getDefaultIdpButtonAppearance(): string {
   const themeConfig = getThemeConfig();
   const appearance = APPEARANCE_STYLES[themeConfig.appearance];
-  return appearance?.["idp-button"] || "border border-divider-light dark:border-divider-dark"; // Fallback to basic border
+  return appearance?.["idp-button"] ?? "";
 }
 
 export const BaseButton = forwardRef<HTMLButtonElement, SignInWithIdentityProviderProps>(function BaseButton(props, ref) {
@@ -33,15 +33,18 @@ export const BaseButton = forwardRef<HTMLButtonElement, SignInWithIdentityProvid
       ref={ref}
       disabled={formStatus.pending}
       className={clsx(
-        `text-text-light-500 focus:border-primary-light-500 dark:text-text-dark-500 focus:dark:border-primary-dark-500 flex flex-1 cursor-pointer flex-row items-center px-4 text-sm transition-all outline-none hover:border-black hover:dark:border-white`,
+        // Spec: text-only outline buttons ("Continue with Google"), so the
+        // provider icons the children carry are hidden.
+        `border-ln-ink text-ln-ink hover:bg-ln-inset focus-visible:outline-ln-ink flex h-11 w-full flex-1 cursor-pointer flex-row items-center border bg-transparent px-4 text-[15px] font-semibold transition-[background-color,opacity,transform] duration-200 ease-out outline-none focus-visible:outline-2 focus-visible:outline-offset-2 disabled:cursor-wait disabled:opacity-60 motion-safe:active:scale-[0.98]`,
         buttonRoundness,
         idpButtonAppearance,
-        `bg-background-light-400 dark:bg-background-dark-500`, // Keep background as fallback for non-glass themes
         props.className,
       )}
     >
       <div className="flex flex-1 items-center justify-between gap-4">
-        <div className="flex flex-1 flex-row items-center">{props.children}</div>
+        <div className="flex flex-1 flex-row items-center justify-center [&>div:has(>svg,>img)]:hidden [&>span]:ml-0">
+          {props.children}
+        </div>
         {formStatus.pending && <Loader2Icon className="h-4 w-4 animate-spin" />}
       </div>
     </button>

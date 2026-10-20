@@ -1,12 +1,5 @@
-import { Avatar } from "@/components/avatar";
-import { getComponentRoundness } from "@/lib/theme";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { Translated } from "@/components/translated";
 import Link from "next/link";
-
-// Helper function to get user avatar container roundness from theme
-function getUserAvatarRoundness(): string {
-  return getComponentRoundness("avatarContainer");
-}
 
 type Props = {
   loginName?: string;
@@ -17,7 +10,6 @@ type Props = {
 
 export function UserAvatar({ loginName, displayName, showDropdown, searchParams }: Props) {
   const params = new URLSearchParams({});
-  const userAvatarRoundness = getUserAvatarRoundness();
 
   if (searchParams?.sessionId) {
     params.set("sessionId", searchParams.sessionId);
@@ -35,19 +27,26 @@ export function UserAvatar({ loginName, displayName, showDropdown, searchParams 
     params.set("loginName", searchParams.loginName);
   }
 
+  // listnun account chip (LISTNUN_UI_SPEC AuthPassword/AuthMfa): name over
+  // login name, "Change" to pick another account. It sits above the title.
   return (
-    <div className={`flex h-full flex-row items-center border p-[1px] dark:border-white/20 ${userAvatarRoundness}`}>
-      <div>
-        <Avatar size="small" name={displayName ?? loginName ?? ""} loginName={loginName ?? ""} />
-      </div>
-      <span className="text-14px ml-4 max-w-[250px] overflow-hidden pr-4 text-ellipsis">{loginName}</span>
-      <span className="flex-grow"></span>
+    <div className="bg-ln-paper border-ln-rule order-first flex min-h-12 flex-row items-center justify-between gap-3 rounded-md border px-3 py-2">
+      <span className="flex min-w-0 flex-col">
+        {displayName && displayName !== loginName && <span className="truncate font-semibold">{displayName}</span>}
+        <span
+          className={
+            displayName && displayName !== loginName ? "text-ln-ink-3 truncate text-[13px]" : "truncate font-semibold"
+          }
+        >
+          {loginName}
+        </span>
+      </span>
       {showDropdown && (
         <Link
           href={"/accounts?" + params}
-          className={`mr-1 ml-4 flex items-center justify-center p-1 transition-all hover:bg-black/10 dark:hover:bg-white/10 ${userAvatarRoundness}`}
+          className="text-ln-ink hover:text-ln-ink-2 shrink-0 text-[13px] font-semibold underline underline-offset-[3px] transition-colors"
         >
-          <ChevronDownIcon className="h-4 w-4" />
+          <Translated i18nKey="change" namespace="common" />
         </Link>
       )}
     </div>

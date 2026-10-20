@@ -117,7 +117,7 @@ export function getComponentRoundness(componentType: keyof ComponentRoundnessCon
 export const SPACING_STYLES = {
   regular: {
     spacing: "space-y-6",
-    padding: "p-6 py-8",
+    padding: "p-6 sm:p-8",
   },
   compact: {
     spacing: "space-y-4",
@@ -127,12 +127,13 @@ export const SPACING_STYLES = {
 
 // Appearance styling (complete design philosophies)
 export const APPEARANCE_STYLES = {
+  // listnun's look (LISTNUN_UI_SPEC 1): surface card on paper, ruled border.
   flat: {
-    card: "bg-background-light-400 dark:bg-background-dark-500 border border-black/10 dark:border-white/10",
-    button: "border border-button-light-border dark:border-button-dark-border", // No shadows for flat design
-    "idp-button": "border border-button-light-border dark:border-button-dark-border", // No shadows for flat design
+    card: "bg-ln-surface border border-ln-rule",
+    button: "shadow-none",
+    "idp-button": "shadow-none",
     typography: "font-normal",
-    background: "bg-background-light-500 dark:bg-background-dark-500", // Same as usual background
+    background: "bg-ln-surface",
   },
   material: {
     card: "bg-background-light-400 dark:bg-background-dark-500 shadow-sm border-0",

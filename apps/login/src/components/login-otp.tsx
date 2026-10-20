@@ -223,7 +223,7 @@ export function LoginOTP({ host, loginName, sessionId, requestId, organization, 
                 aria-label={t("verify.resendCode")}
                 disabled={loading}
                 type="button"
-                className="text-primary-light-500 hover:text-primary-light-400 dark:text-primary-dark-500 hover:dark:text-primary-dark-400 ml-4 cursor-pointer disabled:cursor-default disabled:text-gray-400 dark:disabled:text-gray-700"
+                className="text-ln-ink hover:text-ln-ink-2 ml-4 cursor-pointer font-semibold underline underline-offset-[3px] transition-colors disabled:cursor-default disabled:text-gray-400"
                 onClick={async () => {
                   setLoading(true);
                   const response = await updateSessionForOTPChallenge();
@@ -256,9 +256,7 @@ export function LoginOTP({ host, loginName, sessionId, requestId, organization, 
           </div>
         )}
 
-        <div className="mt-8 flex w-full flex-row items-center">
-          <BackButton data-testid="back-button" />
-          <span className="flex-grow"></span>
+        <div className="ztdl-actions">
           <Button
             type="submit"
             className="self-end"
@@ -269,6 +267,7 @@ export function LoginOTP({ host, loginName, sessionId, requestId, organization, 
           >
             {loading && <Spinner className="mr-2 h-5 w-5" />} <Translated i18nKey="verify.submit" namespace="otp" />
           </Button>
+          <BackButton data-testid="back-button" />
         </div>
       </form>
     </>

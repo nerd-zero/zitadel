@@ -18,16 +18,17 @@ export type TextInputProps = DetailedHTMLProps<InputHTMLAttributes<HTMLInputElem
   roundness?: string; // Allow override via props
 };
 
+// listnun fields (LISTNUN_UI_SPEC 2): 44px, field background, 6px radius;
+// errors get a 2px critical border.
 const styles = (error: boolean, disabled: boolean, roundnessClasses: string = "rounded-md") =>
   clsx(
     {
-      "h-[40px] mb-[2px] p-[7px] bg-input-light-background dark:bg-input-dark-background transition-colors duration-300 grow": true,
-      "border border-input-light-border dark:border-input-dark-border hover:border-black hover:dark:border-white focus:border-primary-light-500 focus:dark:border-primary-dark-500": true,
-      "focus:outline-none focus:ring-0 text-base text-black dark:text-white placeholder:italic placeholder-gray-700 dark:placeholder-gray-700": true,
-      "border border-warn-light-500 dark:border-warn-dark-500 hover:border-warn-light-500 hover:dark:border-warn-dark-500 focus:border-warn-light-500 focus:dark:border-warn-dark-500":
+      "min-h-11 px-3 bg-ln-field text-ln-ink text-[15px] font-normal grow transition-[border-color,box-shadow] duration-200": true,
+      "border border-ln-field-border focus:border-ln-ink focus:outline-none focus:ring-2 focus:ring-ln-ink/20 placeholder:text-ln-ink-3":
+        !error,
+      "border-2 border-ln-bad-strong focus:border-ln-bad-strong focus:outline-none focus:ring-2 focus:ring-ln-bad-strong/20":
         error,
-      "pointer-events-none text-gray-500 dark:text-gray-800 border border-input-light-border dark:border-input-dark-border hover:border-light-hoverborder hover:dark:border-hoverborder cursor-default":
-        disabled,
+      "pointer-events-none opacity-60 cursor-default": disabled,
     },
     roundnessClasses, // Apply the full roundness classes directly
   );
@@ -59,9 +60,9 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
     const actualRoundness = roundness || getDefaultInputRoundness();
 
     return (
-      <label className="text-12px text-input-light-label dark:text-input-dark-label relative flex flex-col">
-        <span className={`mb-1 leading-3 ${error ? "text-warn-light-500 dark:text-warn-dark-500" : ""}`}>
-          {label} {required && "*"}
+      <label className="text-ln-ink relative flex flex-col gap-1.5 text-[15px] font-semibold">
+        <span>
+          {label} {required && <span aria-hidden="true">*</span>}
         </span>
         <input
           suppressHydrationWarning
@@ -69,6 +70,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           className={styles(!!error, !!disabled, actualRoundness)}
           defaultValue={defaultValue}
           required={required}
+          aria-invalid={error ? true : undefined}
           disabled={disabled}
           placeholder={placeholder}
           autoComplete={props.autoComplete ?? "off"}
@@ -80,7 +82,7 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
         {suffix && (
           <span
             className={clsx(
-              "bg-background-light-500 dark:bg-background-dark-500 absolute right-[3px] bottom-[22px] z-30 translate-y-1/2 transform p-2",
+              "bg-ln-inset text-ln-ink-2 absolute right-[3px] bottom-[40px] z-30 translate-y-1/2 transform p-2 text-[15px] font-normal",
               // Extract just the roundness part for the suffix (no padding)
               actualRoundness.split(" ")[0], // Take only the first part (rounded-full, rounded-md, etc.)
             )}
@@ -89,12 +91,12 @@ export const TextInput = forwardRef<HTMLInputElement, TextInputProps>(
           </span>
         )}
 
-        <div className="leading-14.5px h-14.5px text-12px text-warn-light-500 dark:text-warn-dark-500 flex flex-row items-center">
+        <div className="text-ln-bad flex min-h-[18px] flex-row items-center text-[13px] leading-[18px] font-semibold">
           <span>{error ? error : " "}</span>
         </div>
 
         {success && (
-          <div className="text-md mt-1 flex flex-row items-center text-green-500">
+          <div className="text-ln-good mt-1 flex flex-row items-center text-[13px] font-semibold">
             <CheckCircleIcon className="h-4 w-4" />
             <span className="ml-1">{success}</span>
           </div>

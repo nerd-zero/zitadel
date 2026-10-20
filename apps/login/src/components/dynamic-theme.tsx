@@ -88,7 +88,7 @@ export function DynamicTheme({
               </div>
             );
           })()
-        : // Traditional top-to-bottom layout - center title/description, left-align forms
+        : // Traditional top-to-bottom layout - title, description and forms left-aligned
           (() => {
             const childArray = Children.toArray(actualChildren);
             const titleContent = childArray[0] || null;
@@ -96,24 +96,27 @@ export function DynamicTheme({
             const hasMultipleChildren = childArray.length > 1;
 
             return (
-              <div className="relative mx-auto w-full max-w-[440px] px-4 py-4">
+              // listnun: a 420px card (LISTNUN_UI_SPEC sign-in), title left-aligned.
+              <div className="relative mx-auto w-full max-w-[452px] px-4">
                 <Card>
-                  <div className="mx-auto flex flex-col items-center space-y-8">
-                    <div className="relative flex flex-row items-center justify-center">
-                      {branding && (
+                  <div className="flex flex-col gap-5">
+                    {(branding?.lightTheme?.logoUrl || branding?.darkTheme?.logoUrl) && (
+                      <div className="relative flex flex-row items-center justify-center">
                         <Logo
                           lightSrc={branding.lightTheme?.logoUrl}
                           darkSrc={branding.darkTheme?.logoUrl}
                           height={150}
                           width={150}
                         />
-                      )}
-                    </div>
+                      </div>
+                    )}
 
                     {hasMultipleChildren ? (
                       <>
-                        {/* Title and description - center aligned */}
-                        <div className="mb-4 flex w-full flex-col items-center text-center">{titleContent}</div>
+                        {/* Title and description - left aligned */}
+                        <div className="flex w-full flex-col text-left [&_h1+p]:-mt-2.5 [&>div]:gap-4 [&>div]:!space-y-0">
+                          {titleContent}
+                        </div>
 
                         {/* Form content - left aligned */}
                         <div className="w-full">{formContent}</div>
@@ -122,8 +125,6 @@ export function DynamicTheme({
                       // Single child - use original behavior
                       <div className="w-full">{actualChildren}</div>
                     )}
-
-                    <div className="flex flex-row justify-between"></div>
                   </div>
                 </Card>
               </div>

@@ -187,8 +187,7 @@ export function ChangePasswordForm({ passwordComplexitySettings, sessionId, logi
 
         {error && <Alert>{error}</Alert>}
 
-        <div className="mt-8 flex w-full flex-row items-center justify-between">
-          <BackButton data-testid="back-button" />
+        <div className="ztdl-actions">
           <Button
             type="submit"
             variant={ButtonVariants.Primary}
@@ -198,6 +197,7 @@ export function ChangePasswordForm({ passwordComplexitySettings, sessionId, logi
           >
             {loading && <Spinner className="mr-2 h-5 w-5" />} <Translated i18nKey="change.submit" namespace="password" />
           </Button>
+          <BackButton data-testid="back-button" />
         </div>
       </form>
     </>

@@ -12,23 +12,22 @@ export enum AlertType {
   INFO,
 }
 
-const yellow =
-  "border-yellow-600/40 dark:border-yellow-500/20 bg-yellow-200/30 text-yellow-600 dark:bg-yellow-700/20 dark:text-yellow-200";
-// const red =
-//   "border-red-600/40 dark:border-red-500/20 bg-red-200/30 text-red-600 dark:bg-red-700/20 dark:text-red-200";
-const neutral = "border-divider-light dark:border-divider-dark bg-black/5 text-gray-600 dark:bg-white/10 dark:text-gray-200";
+// listnun status tints (LISTNUN_UI_SPEC 1.1): critical for alerts, neutral for info.
+const critical = "border-ln-bad-strong bg-ln-bad-tint text-ln-bad font-semibold";
+const neutral = "border-ln-rule bg-ln-neutral-tint text-ln-ink-2";
 
 export function Alert({ children, type = AlertType.ALERT }: Props) {
   return (
     <div
-      className={clsx("flex scroll-px-40 flex-row items-center justify-center rounded-md border py-2 pr-2", {
-        [yellow]: type === AlertType.ALERT,
+      role={type === AlertType.ALERT ? "alert" : "status"}
+      className={clsx("flex scroll-px-40 flex-row items-center justify-center rounded-md border py-2.5 pr-3", {
+        [critical]: type === AlertType.ALERT,
         [neutral]: type === AlertType.INFO,
       })}
     >
       {type === AlertType.ALERT && <ExclamationTriangleIcon className="mr-2 ml-2 h-5 w-5 flex-shrink-0" />}
       {type === AlertType.INFO && <InformationCircleIcon className="mr-2 ml-2 h-5 w-5 flex-shrink-0" />}
-      <span className="w-full text-sm">{children}</span>
+      <span className="w-full text-[14px]">{children}</span>
     </div>
   );
 }

@@ -50,7 +50,7 @@ export default async function Page(props: { searchParams: Promise<Record<string 
 
         {postErrorRedirectUrl && (
           <Link href={postErrorRedirectUrl}>
-            <Button className="bg-primary-light-500 hover:bg-primary-light-400 dark:bg-primary-dark-500 dark:hover:bg-primary-dark-400 w-full rounded-md px-4 py-3 text-center transition-all">
+            <Button className="w-full">
               <Translated i18nKey="registrationFailed.backToLogin" namespace="idp" />
             </Button>
           </Link>

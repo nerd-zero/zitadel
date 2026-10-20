@@ -193,7 +193,7 @@ export function SetPasswordForm({
                   aria-label={t("set.resend")}
                   disabled={loading}
                   type="button"
-                  className="text-primary-light-500 hover:text-primary-light-400 dark:text-primary-dark-500 hover:dark:text-primary-dark-400 ml-4 cursor-pointer disabled:cursor-default disabled:text-gray-400 dark:disabled:text-gray-700"
+                  className="text-ln-ink hover:text-ln-ink-2 ml-4 cursor-pointer font-semibold underline underline-offset-[3px] transition-colors disabled:cursor-default disabled:text-gray-400"
                   onClick={() => {
                     resendCode();
                   }}
@@ -259,8 +259,7 @@ export function SetPasswordForm({
 
         {error && <Alert>{error}</Alert>}
 
-        <div className="mt-8 flex w-full flex-row items-center justify-between">
-          <BackButton data-testid="back-button" />
+        <div className="ztdl-actions">
           <Button
             type="submit"
             variant={ButtonVariants.Primary}
@@ -270,6 +269,7 @@ export function SetPasswordForm({
           >
             {loading && <Spinner className="mr-2 h-5 w-5" />} <Translated i18nKey="set.submit" namespace="password" />
           </Button>
+          <BackButton data-testid="back-button" />
         </div>
       </form>
     </>
